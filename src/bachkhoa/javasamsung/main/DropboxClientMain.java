@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +24,7 @@ import javafx.stage.Stage;
 
 public class DropboxClientMain extends Application {
 	private DropboxManager manager;
+	
 	public void start(Stage arg0) throws Exception {
 		 manager = new DropboxManager();
 		// TODO Auto-generated method stub
@@ -77,6 +79,16 @@ public class DropboxClientMain extends Application {
 		Stage stage = new Stage();
 		try {
 			stage.setTitle(manager.getClient().getAccountInfo().displayName);
+			ListView<String> folderList = new ListView<>();
+			folderList.setItems(manager.listAllFolder());
+			GridPane logginGrid = new GridPane();
+			logginGrid.setAlignment(Pos.CENTER);
+			logginGrid.setVgap(10);
+			logginGrid.setHgap(10);
+			logginGrid.setPadding(new Insets(25, 25, 25, 25));
+			logginGrid.add(folderList, 0, 0);
+			Scene logginScne = new Scene(logginGrid, 640, 480);
+			stage.setScene(logginScne);
 			stage.show();
 		} catch (DbxException e) {
 			// TODO Auto-generated catch block
