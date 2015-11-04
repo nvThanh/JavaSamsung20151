@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="icon"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="F:/HocTap2016/JAVASamsung20151/dropbox-java-sdk-1.8.1/lib/dropbox-core-sdk-1.8.1.jar"/>
-	<classpathentry kind="lib" path="F:/HocTap2016/JAVASamsung20151/dropbox-java-sdk-1.8.1/lib/jackson-core-2.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Nhat Le/Downloads/dropbox-java-sdk-1.8.2/lib/dropbox-core-sdk-1.8.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Nhat Le/Downloads/dropbox-java-sdk-1.8.2/lib/jackson-core-2.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
