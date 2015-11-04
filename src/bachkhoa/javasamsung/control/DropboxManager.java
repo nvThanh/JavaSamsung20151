@@ -2,9 +2,13 @@ package bachkhoa.javasamsung.control;
 
 import java.util.Locale;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxAuthFinish;
 import com.dropbox.core.DbxClient;
+import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuthNoRedirect;
@@ -68,6 +72,7 @@ public class DropboxManager {
 			accessToken = authFinish.accessToken;
 			client = new DbxClient(requestConfig, accessToken);
 			System.out.println("Done");
+			System.out.println("Logged In to "+ client.getAccountInfo().displayName);
 			
 		} catch (DbxException e) {
 			// TODO Auto-generated catch block
@@ -98,5 +103,19 @@ public class DropboxManager {
 
 	public void setClient(DbxClient client) {
 		this.client = client;
+	}
+	public ObservableList<String> listAllFolder(){
+		ObservableList<String> listFolder = FXCollections.observableArrayList();
+		try {
+			DbxEntry.WithChildren listing = client.getMetadataWithChildren("/");
+			for(DbxEntry child : listing.children){
+				listFolder.add(child.path);
+			}
+			return listFolder;
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

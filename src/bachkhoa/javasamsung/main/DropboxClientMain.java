@@ -1,14 +1,18 @@
 package bachkhoa.javasamsung.main;
 
+import com.dropbox.core.DbxException;
+
 import bachkhoa.javasamsung.control.DropboxManager;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,9 +23,10 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 public class DropboxClientMain extends Application {
-
+	private DropboxManager manager;
+	
 	public void start(Stage arg0) throws Exception {
-		DropboxManager manager = new DropboxManager();
+		 manager = new DropboxManager();
 		// TODO Auto-generated method stub
 		GridPane logginGrid = new GridPane();
 		logginGrid.setAlignment(Pos.CENTER);
@@ -32,7 +37,7 @@ public class DropboxClientMain extends Application {
 		textField.setPromptText("Copy then paste accesstoken here");
 		
 		Label label = new Label();
-		label.setText("Please sigin dropbox client");
+		label.setText("Please Sigin Dropbox Client");
 		label.setWrapText(true);
 		Image image = new Image(getClass().getResourceAsStream(
 				"/dropbox-icon.png"));
@@ -55,6 +60,9 @@ public class DropboxClientMain extends Application {
 				System.out.println("Ok clicking");
 				System.out.println(textField.getText().toString());
 				manager.finishAuthentication(textField.getText().toString().trim());
+				Node node =(Node) arg0.getSource();
+				node.getScene().getWindow().hide();
+				showListFolder(manager);
 				}
 			}
 		});
@@ -66,6 +74,29 @@ public class DropboxClientMain extends Application {
 		arg0.setTitle("Welcome to Dropbox Client");
 		arg0.setScene(logginScne);
 		arg0.show();
+	}
+	public void showListFolder(DropboxManager manager){
+		Stage stage = new Stage();
+		try {
+			stage.setTitle(manager.getClient().getAccountInfo().displayName);
+			ListView<String> folderList = new ListView<>();
+			folderList.setItems(manager.listAllFolder());
+			GridPane logginGrid = new GridPane();
+			logginGrid.setAlignment(Pos.CENTER);
+			logginGrid.setVgap(10);
+			logginGrid.setHgap(10);
+			logginGrid.setPadding(new Insets(25, 25, 25, 25));
+			logginGrid.add(folderList, 0, 0);
+			Scene logginScne = new Scene(logginGrid, 640, 480);
+			stage.setScene(logginScne);
+			stage.show();
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void main(String args[]){
+		launch(args);
 	}
 
 }
