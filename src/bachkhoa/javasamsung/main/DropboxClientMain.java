@@ -1,11 +1,14 @@
 package bachkhoa.javasamsung.main;
 
+import com.dropbox.core.DbxException;
+
 import bachkhoa.javasamsung.control.DropboxManager;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,9 +22,9 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 public class DropboxClientMain extends Application {
-
+	private DropboxManager manager;
 	public void start(Stage arg0) throws Exception {
-		DropboxManager manager = new DropboxManager();
+		 manager = new DropboxManager();
 		// TODO Auto-generated method stub
 		GridPane logginGrid = new GridPane();
 		logginGrid.setAlignment(Pos.CENTER);
@@ -32,7 +35,7 @@ public class DropboxClientMain extends Application {
 		textField.setPromptText("Copy then paste accesstoken here");
 		
 		Label label = new Label();
-		label.setText("Please sigin dropbox client");
+		label.setText("Please Sigin Dropbox Client");
 		label.setWrapText(true);
 		Image image = new Image(getClass().getResourceAsStream(
 				"/dropbox-icon.png"));
@@ -55,6 +58,9 @@ public class DropboxClientMain extends Application {
 				System.out.println("Ok clicking");
 				System.out.println(textField.getText().toString());
 				manager.finishAuthentication(textField.getText().toString().trim());
+				Node node =(Node) arg0.getSource();
+				node.getScene().getWindow().hide();
+				showListFolder(manager);
 				}
 			}
 		});
@@ -66,6 +72,19 @@ public class DropboxClientMain extends Application {
 		arg0.setTitle("Welcome to Dropbox Client");
 		arg0.setScene(logginScne);
 		arg0.show();
+	}
+	public void showListFolder(DropboxManager manager){
+		Stage stage = new Stage();
+		try {
+			stage.setTitle(manager.getClient().getAccountInfo().displayName);
+			stage.show();
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void main(String args[]){
+		launch(args);
 	}
 
 }

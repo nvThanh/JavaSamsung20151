@@ -68,6 +68,7 @@ public class DropboxManager {
 			accessToken = authFinish.accessToken;
 			client = new DbxClient(requestConfig, accessToken);
 			System.out.println("Done");
+			System.out.println("Logged In to "+ client.getAccountInfo().displayName);
 			
 		} catch (DbxException e) {
 			// TODO Auto-generated catch block
