@@ -87,6 +87,49 @@ public class DropboxClientMain extends Application {
 			logginGrid.setHgap(10);
 			logginGrid.setPadding(new Insets(25, 25, 25, 25));
 			logginGrid.add(folderList, 0, 0);
+			Button button = new Button("Up Load");
+			button.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					// TODO Auto-generated method stub
+					System.out.println("On action event");
+				}
+			});
+			logginGrid.add(button, 0, 1);
+			
+			Button btnRename = new Button("ReName");
+			button.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					// TODO Auto-generated method stub
+					System.out.println("On action event");
+				}
+			});
+			logginGrid.add(btnRename, 0, 2);
+			
+			Button btnUpload = new Button("Up Load");
+			button.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					// TODO Auto-generated method stub
+					System.out.println("On action event");
+				}
+			});
+			logginGrid.add(btnUpload, 0, 3);
+			
+			Button btnDowload = new Button("Dow Load");
+			button.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					// TODO Auto-generated method stub
+					System.out.println("On action event");
+				}
+			});
+			logginGrid.add(btnDowload, 0, 4);
 			Scene logginScne = new Scene(logginGrid, 640, 480);
 			stage.setScene(logginScne);
 			stage.show();

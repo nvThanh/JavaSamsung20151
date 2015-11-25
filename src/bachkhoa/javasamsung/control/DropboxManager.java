@@ -1,5 +1,6 @@
 package bachkhoa.javasamsung.control;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import javafx.collections.FXCollections;
@@ -23,6 +24,7 @@ public class DropboxManager {
 	private DbxAuthFinish authFinish;
 	private String accessToken;
 	private DbxClient client;
+	private ArrayList<String> listPath;
 	public DbxAppInfo getAppInfo() {
 		return appInfo;
 	}
