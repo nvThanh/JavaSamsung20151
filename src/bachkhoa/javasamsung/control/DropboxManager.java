@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -36,7 +37,17 @@ public class DropboxManager {
 	private String accessToken;
 	private DbxClient client;
 	private ArrayList<String> listPath;
-	private ObservableList<String> listFolder = FXCollections.observableArrayList();
+	public ObservableList<String> listFolder = FXCollections.observableArrayList();
+	private String currentFolder;
+	
+	public String getCurrentFolder() {
+		return currentFolder;
+	}
+
+	public void setCurrentFolder(String currentFolder) {
+		this.currentFolder = currentFolder;
+	}
+
 	public DbxAppInfo getAppInfo() {
 		return appInfo;
 	}
@@ -118,10 +129,10 @@ public class DropboxManager {
 	public void setClient(DbxClient client) {
 		this.client = client;
 	}
-	public ObservableList<String> listAllFolder(){
+	public ObservableList<String> listAllFolder(String folder){
 		//ObservableList<String> listFolder = FXCollections.observableArrayList();
 		try {
-			DbxEntry.WithChildren listing = client.getMetadataWithChildren("/");
+			DbxEntry.WithChildren listing = client.getMetadataWithChildren(folder);
 			for(DbxEntry child : listing.children){
 				listFolder.add(child.path);
 			}
@@ -145,12 +156,61 @@ public class DropboxManager {
 		try {
 		    DbxEntry.File uploadedFile = client.uploadFile("/" + file.getName(),
 		        DbxWriteMode.add(), file.length(), inputStream);
-		    listFolder.add("/"+file.getName());
+		    listFolder.clear();
+			listFolder = listAllFolder(currentFolder);
 		    System.out.println("Uploaded: " + uploadedFile.toString());
 		} finally {
 		    inputStream.close();
 		}}
 		    
 }
+	public void reNameFile(String newName, String currentName){
+		String name = currentName.replace(currentFolder, "");
+		String name1 = name.substring(name.lastIndexOf("."), name.length()-1);
+		String name2 = newName +name1;
+		System.out.println(name2);
+		try {
+			client.move(currentName, currentFolder+name2);
+			listFolder.clear();
+			listFolder = listAllFolder(currentFolder);
+			System.out.println("Renamed"+newName);
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void deleteFile(String fileName){
+		try {
+			client.delete(fileName);
+			listFolder.clear();
+			listFolder = listAllFolder(currentFolder);
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void dowloadFile(String file){
+		File folder = new File("F:\\Java2015Test");
+		if(!folder.exists()){
+			folder.mkdirs();
+		}
+		File dowload = new File(folder, file.replace(currentFolder, ""));
+		try {
+			FileOutputStream fileOutputStream = new FileOutputStream(dowload);
+			client.getFile(file, null, fileOutputStream);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 
 	}
