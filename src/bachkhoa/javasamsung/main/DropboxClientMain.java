@@ -111,7 +111,7 @@ public class DropboxClientMain extends Application {
 				public void handle(ActionEvent arg0) {
 					// TODO Auto-generated method stub
 					System.out.println("On action event");
-					manager.deleteFiles(global, globalIndex);
+					//manager.deleteFiles(global, globalIndex);
 				}
 			});
 			logginGrid.add(button, 0, 1);
@@ -123,7 +123,7 @@ public class DropboxClientMain extends Application {
 				public void handle(ActionEvent arg1) {
 					// TODO Auto-generated method stub
 					System.out.println("On action event");
-					manager.reNameFiles(global, "/aloha.txt",globalIndex);
+					//eNameFiles(global, "/aloha.txt",globalIndex);
 				}
 			});
 			logginGrid.add(btnRename, 0, 2);
@@ -156,7 +156,7 @@ public class DropboxClientMain extends Application {
 				public void handle(ActionEvent arg3) {
 					// TODO Auto-generated method stub
 					System.out.println("On action event");
-					manager.downLoadFiles(global);
+					//manager.downLoadFiles(global);
 				}
 			});
 			logginGrid.add(btnDownload, 0, 4);

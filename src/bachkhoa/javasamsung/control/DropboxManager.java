@@ -26,8 +26,8 @@ import com.dropbox.core.DbxWebAuthNoRedirect;
 import com.dropbox.core.DbxWriteMode;
 
 public class DropboxManager {
-	private final String APP_KEY = "5st1et99bg5ft52";
-	private final String APP_SECRECT = "g0b8tgjlb1gyn83";
+	private final String APP_KEY = "0olubd4zreas1ov";
+	private final String APP_SECRECT = "ojh19hwhpwjsmwq";
 	private DbxAppInfo appInfo;
 	private DbxRequestConfig requestConfig;
 	private DbxWebAuthNoRedirect webAuthNoRedirect;
@@ -152,41 +152,5 @@ public class DropboxManager {
 		}}
 		    
 }
-	public void downLoadFiles(String global){
-	try{
-		File folder = new File("C:/Users/quang/Documents/dropboxdata");
-		if(!folder.exists()){
-			folder.mkdirs();
-		}
-		File file = new File(folder, global.replace("/", ""));
-		FileOutputStream outputStream = new FileOutputStream(file);
-		try {
-		    DbxEntry.File downloadedFile = client.getFile(global, null,
-		        outputStream);
-		    System.out.println("Metadata: " + downloadedFile.toString());
-		} finally {
-		    outputStream.close();
-		}
-	}
-	catch(Exception e){
-		System.out.println("Error file!");
-	};
-	
-	}
-	
-	public void reNameFiles(String global, String myFile, int globalIndex){
-		try{
-			DbxEntry renameFile = client.move(global, myFile);
-			listFolder.remove(1);
-			 listFolder.add( myFile);
-		}
-		catch(Exception e){}
-	}
-	public void deleteFiles(String global, int globalIndex){
-		try{
-			client.delete(global);
-			listFolder.remove(globalIndex);	
-		}
-		catch(Exception e){}
-	}
+
 	}
