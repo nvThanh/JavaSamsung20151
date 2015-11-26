@@ -1,5 +1,10 @@
 package bachkhoa.javasamsung.main;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
 
 import bachkhoa.javasamsung.control.DropboxManager;
@@ -16,6 +21,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
@@ -24,6 +30,8 @@ import javafx.stage.Stage;
 
 public class DropboxClientMain extends Application {
 	private DropboxManager manager;
+	public String global;
+	private int globalIndex;
 	
 	public void start(Stage arg0) throws Exception {
 		 manager = new DropboxManager();
@@ -81,56 +89,78 @@ public class DropboxClientMain extends Application {
 			stage.setTitle(manager.getClient().getAccountInfo().displayName);
 			ListView<String> folderList = new ListView<>();
 			folderList.setItems(manager.listAllFolder());
+			folderList.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+				@Override
+				public void handle(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					System.out.println("clicked on " + folderList.getSelectionModel().getSelectedItem());
+					global = new String(folderList.getSelectionModel().getSelectedItem());
+					globalIndex = folderList.getSelectionModel().getSelectedIndex();
+				}});
 			GridPane logginGrid = new GridPane();
 			logginGrid.setAlignment(Pos.CENTER);
 			logginGrid.setVgap(10);
 			logginGrid.setHgap(10);
 			logginGrid.setPadding(new Insets(25, 25, 25, 25));
 			logginGrid.add(folderList, 0, 0);
-			Button button = new Button("Up Load");
+			Button button = new Button("DeleteFile");
 			button.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent arg0) {
 					// TODO Auto-generated method stub
 					System.out.println("On action event");
+					manager.deleteFiles(global, globalIndex);
 				}
 			});
 			logginGrid.add(button, 0, 1);
 			
-			Button btnRename = new Button("ReName");
-			button.setOnAction(new EventHandler<ActionEvent>() {
+			Button btnRename = new Button("Rename");
+			btnRename.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent arg0) {
+				public void handle(ActionEvent arg1) {
 					// TODO Auto-generated method stub
 					System.out.println("On action event");
+					manager.reNameFiles(global, "/aloha.txt",globalIndex);
 				}
 			});
 			logginGrid.add(btnRename, 0, 2);
 			
-			Button btnUpload = new Button("Up Load");
-			button.setOnAction(new EventHandler<ActionEvent>() {
+			Button btnUpload = new Button("UpLoad");
+			btnUpload.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent arg0) {
+				public void handle(ActionEvent arg2) {
 					// TODO Auto-generated method stub
 					System.out.println("On action event");
+					try {
+						manager.upLoadFiles();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (DbxException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				}
 			});
 			logginGrid.add(btnUpload, 0, 3);
 			
-			Button btnDowload = new Button("Dow Load");
-			button.setOnAction(new EventHandler<ActionEvent>() {
+			Button btnDownload = new Button("DownLoad");
+			btnDownload.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent arg0) {
+				public void handle(ActionEvent arg3) {
 					// TODO Auto-generated method stub
 					System.out.println("On action event");
+					manager.downLoadFiles(global);
 				}
 			});
-			logginGrid.add(btnDowload, 0, 4);
-			Scene logginScne = new Scene(logginGrid, 640, 480);
+			logginGrid.add(btnDownload, 0, 4);
+			Scene logginScne = new Scene(logginGrid, 320, 480);
 			stage.setScene(logginScne);
 			stage.show();
 		} catch (DbxException e) {
@@ -141,5 +171,6 @@ public class DropboxClientMain extends Application {
 	public static void main(String args[]){
 		launch(args);
 	}
+	
 
 }

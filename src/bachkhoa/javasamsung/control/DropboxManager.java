@@ -1,10 +1,20 @@
 package bachkhoa.javasamsung.control;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxAuthFinish;
@@ -13,10 +23,11 @@ import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuthNoRedirect;
+import com.dropbox.core.DbxWriteMode;
 
 public class DropboxManager {
-	private final String APP_KEY = "0olubd4zreas1ov";
-	private final String APP_SECRECT = "ojh19hwhpwjsmwq";
+	private final String APP_KEY = "5st1et99bg5ft52";
+	private final String APP_SECRECT = "g0b8tgjlb1gyn83";
 	private DbxAppInfo appInfo;
 	private DbxRequestConfig requestConfig;
 	private DbxWebAuthNoRedirect webAuthNoRedirect;
@@ -25,6 +36,7 @@ public class DropboxManager {
 	private String accessToken;
 	private DbxClient client;
 	private ArrayList<String> listPath;
+	private ObservableList<String> listFolder = FXCollections.observableArrayList();
 	public DbxAppInfo getAppInfo() {
 		return appInfo;
 	}
@@ -107,7 +119,7 @@ public class DropboxManager {
 		this.client = client;
 	}
 	public ObservableList<String> listAllFolder(){
-		ObservableList<String> listFolder = FXCollections.observableArrayList();
+		//ObservableList<String> listFolder = FXCollections.observableArrayList();
 		try {
 			DbxEntry.WithChildren listing = client.getMetadataWithChildren("/");
 			for(DbxEntry child : listing.children){
@@ -120,4 +132,61 @@ public class DropboxManager {
 		}
 		return null;
 	}
+	public void upLoadFiles() throws IOException, DbxException{
+		 JFileChooser fileopen = new JFileChooser();
+		    FileNameExtensionFilter filter = new FileNameExtensionFilter("c files", "c");
+		    fileopen.addChoosableFileFilter(filter);
+
+		    int ret = fileopen.showDialog(null, "Open file");
+
+		    if (ret == JFileChooser.APPROVE_OPTION) {
+		      File file = fileopen.getSelectedFile();
+		FileInputStream inputStream = new FileInputStream(file);
+		try {
+		    DbxEntry.File uploadedFile = client.uploadFile("/" + file.getName(),
+		        DbxWriteMode.add(), file.length(), inputStream);
+		    listFolder.add("/"+file.getName());
+		    System.out.println("Uploaded: " + uploadedFile.toString());
+		} finally {
+		    inputStream.close();
+		}}
+		    
 }
+	public void downLoadFiles(String global){
+	try{
+		File folder = new File("C:/Users/quang/Documents/dropboxdata");
+		if(!folder.exists()){
+			folder.mkdirs();
+		}
+		File file = new File(folder, global.replace("/", ""));
+		FileOutputStream outputStream = new FileOutputStream(file);
+		try {
+		    DbxEntry.File downloadedFile = client.getFile(global, null,
+		        outputStream);
+		    System.out.println("Metadata: " + downloadedFile.toString());
+		} finally {
+		    outputStream.close();
+		}
+	}
+	catch(Exception e){
+		System.out.println("Error file!");
+	};
+	
+	}
+	
+	public void reNameFiles(String global, String myFile, int globalIndex){
+		try{
+			DbxEntry renameFile = client.move(global, myFile);
+			listFolder.remove(1);
+			 listFolder.add( myFile);
+		}
+		catch(Exception e){}
+	}
+	public void deleteFiles(String global, int globalIndex){
+		try{
+			client.delete(global);
+			listFolder.remove(globalIndex);	
+		}
+		catch(Exception e){}
+	}
+	}
