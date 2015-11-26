@@ -152,41 +152,5 @@ public class DropboxManager {
 		}}
 		    
 }
-	public void downLoadFiles(String global){
-	try{
-		File folder = new File("C:/Users/quang/Documents/dropboxdata");
-		if(!folder.exists()){
-			folder.mkdirs();
-		}
-		File file = new File(folder, global.replace("/", ""));
-		FileOutputStream outputStream = new FileOutputStream(file);
-		try {
-		    DbxEntry.File downloadedFile = client.getFile(global, null,
-		        outputStream);
-		    System.out.println("Metadata: " + downloadedFile.toString());
-		} finally {
-		    outputStream.close();
-		}
-	}
-	catch(Exception e){
-		System.out.println("Error file!");
-	};
-	
-	}
-	
-	public void reNameFiles(String global, String myFile, int globalIndex){
-		try{
-			DbxEntry renameFile = client.move(global, myFile);
-			listFolder.remove(1);
-			 listFolder.add( myFile);
-		}
-		catch(Exception e){}
-	}
-	public void deleteFiles(String global, int globalIndex){
-		try{
-			client.delete(global);
-			listFolder.remove(globalIndex);	
-		}
-		catch(Exception e){}
-	}
+
 	}
