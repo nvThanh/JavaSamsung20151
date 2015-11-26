@@ -26,8 +26,8 @@ import com.dropbox.core.DbxWebAuthNoRedirect;
 import com.dropbox.core.DbxWriteMode;
 
 public class DropboxManager {
-	private final String APP_KEY = "5st1et99bg5ft52";
-	private final String APP_SECRECT = "g0b8tgjlb1gyn83";
+	private final String APP_KEY = "0olubd4zreas1ov";
+	private final String APP_SECRECT = "ojh19hwhpwjsmwq";
 	private DbxAppInfo appInfo;
 	private DbxRequestConfig requestConfig;
 	private DbxWebAuthNoRedirect webAuthNoRedirect;
